@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Danh sách hóa đơn</title>
+  <!-- Bổ sung các liên kết đến Bootstrap CSS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+</head>
+<body>
+
+<div class="container mt-5">
+  <h2>Danh sách hóa đơn</h2>
+  <table class="table" id="bill-table">
+    <thead>
+      <tr>
+        <th scope="col">STT</th>
+        <th scope="col">Tên khách hàng</th>
+        <th scope="col">Tên sản phẩm</th>
+        <th scope="col">Số lượng</th>
+        <th scope="col">Ngày mua</th>
+        <th scope="col">Tổng tiền</th>
+      </tr>
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    fetch('/bill')
+      .then(response => response.json())
+      .then(bills => {
+        renderProducts(bills);
+      })
+      .catch(error => console.error('Error fetching products:', error));
+
+    function renderProducts(bills) {
+      const tableBody = document.querySelector('#bill-table tbody');
+      
+      bills.forEach((bill, index) => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <th scope="row">${index + 1}</th>
+          <td>${bill.email}</td>
+          <td>${bill.tenSP}</td>
+          <td>${bill.soLuong}</td>
+          <td>${bill.ngay}</td>
+          <td>$${bill.tongTien} </td>
+        `;
+        tableBody.appendChild(row);
+      });
+    }
+  });
+</script>
+
+</body>
+</html>

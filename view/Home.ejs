@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <!-- Link đến Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">Quản lý Bán hàng</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="javascript:void(0);" onclick="loadContent('/ListP');">Danh sách sản phẩm</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="javascript:void(0);" onclick="loadContent('/AddP');">Thêm sản phẩm</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="javascript:void(0);" onclick="loadContent('/Bills');">Hóa đơn</a>
+                </li>
+                <!-- Thêm các mục menu khác ở đây -->
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        
+        <iframe id="contentFrame" width="100%" height="1500" frameborder="0"></iframe>
+    </div>
+
+    <script>
+        // Function để tải nội dung của `iframe`
+        function loadContent(url) {
+            document.getElementById("contentFrame").src = url;
+        }
+
+        // Mặc định hiển thị trang danh sách sản phẩm khi trang được tải lên
+        loadContent('/ListP')
+    </script>
+</body>
+</html>

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sửa Sản phẩm</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Sửa Sản phẩm</h2>
+        <form id="editProductForm" enctype="multipart/form-data">
+          
+            <div class="form-group">
+                <label for="productName">Tên sản phẩm:</label>
+                <input type="text" class="form-control" id="productName" name="tenSP" required>
+            </div>
+            <div class="form-group">
+                <label for="productCode">Số lượng:</label>
+                <input type="number" class="form-control" id="productCount" name="soLuong" required>
+            </div>
+            <div class="form-group">
+                <label for="productPrice">Đơn giá:</label>
+                <input type="text" class="form-control" id="productPrice" name="giaSP" required>
+            </div>
+            <div class="form-group">
+                <label for="productImages">Hình ảnh:</label>
+                <input type="file" class="form-control-file" id="productImages" name="productImages"  multiple>
+            </div>
+            <div class="form-group" id="imagePreviewContainer" style="display: none;">
+                <img id="imagePreview1" src="" alt="Hình ảnh xem trước 1" style="max-width: 100px; margin-right: 10px;">
+                <img id="imagePreview2" src="" alt="Hình ảnh xem trước 2" style="max-width: 100px;">
+            </div>
+            <div class="form-group">
+                <label for="productDescription">Mô tả:</label>
+                <input type="text" class="form-control" id="productDescription" name="moTa">
+            </div>
+          
+            <button type="submit" class="btn btn-primary">Lưu Sản phẩm</button>
+            <button type="button" class="btn btn-secondary cancel-button">Hủy bỏ</button>
+        </form>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Xử lý khi nút "Hủy bỏ" được nhấn
+            $('.cancel-button').click(function() {
+                window.location.href = "/ListP"; // Chuyển hướng về danh sách sản phẩm
+            });
+
+            // Lấy ID sản phẩm từ URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const productId = urlParams.get('id');
+
+            // Gọi API để lấy thông tin sản phẩm theo ID
+            $.ajax({
+                url: `/products/${productId}`,
+                method: 'GET',
+                success: function(product) {
+                    // Điền dữ liệu vào form
+                    $('#productCount').val(product.soLuong);
+                    $('#productName').val(product.tenSP);
+                    $('#productPrice').val(product.giaSP);
+                    $('#productDescription').val(product.moTa);
+
+                    // Hiển thị trước hình ảnh nếu có
+                    if (product.anhSP && product.anhSP.length >= 2) {
+                        $('#imagePreview1').attr('src', product.anhSP[0]).show();
+                        $('#imagePreview2').attr('src', product.anhSP[1]).show();
+                        $('#imagePreviewContainer').show();
+                    }
+                },
+                error: function(error) {
+                    console.error("Lấy dữ liệu sản phẩm thất bại:", error);
+                }
+            });
+
+            // Hiển thị hình ảnh xem trước khi upload
+            $('#productImages').change(function(event) {
+                const files = event.target.files;
+                if (files && files[0] && files[1]) {
+                    const reader1 = new FileReader();
+                    reader1.onload = function(e) {
+                        $('#imagePreview1').attr('src', e.target.result).show();
+                    };
+                    reader1.readAsDataURL(files[0]);
+
+                    const reader2 = new FileReader();
+                    reader2.onload = function(e) {
+                        $('#imagePreview2').attr('src', e.target.result).show();
+                    };
+                    reader2.readAsDataURL(files[1]);
+
+                    $('#imagePreviewContainer').show();
+                }
+            });
+
+            // Gửi yêu cầu AJAX khi form được submit
+            $('#editProductForm').submit(function(event) {
+                event.preventDefault();
+                const formData = new FormData(this);
+
+                $.ajax({
+                    url: `/products/${productId}`,
+                    method: 'PUT',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function(response) {
+                        alert(response.message);
+                        window.location.href = "/ListP"; // Chuyển hướng về danh sách sản phẩm
+                    },
+                    error: function(error) {
+                        console.error("Lỗi khi cập nhật sản phẩm:", error.responseJSON);
+                        alert('Lỗi khi cập nhật sản phẩm!');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

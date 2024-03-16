@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Thêm Sản phẩm</title>
+    <!-- Link đến Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+
+<body>
+    <div class="container">
+        <h2>Thêm Sản phẩm</h2>
+        <form id="productForm" action="/products" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="productName">Tên sản phẩm:</label>
+                <input type="text" class="form-control" id="productName" name="productName" required>
+            </div>
+            <div class="form-group">
+                <label for="productCode">Số lượng:</label>
+                <input type="number" class="form-control" id="productCount" name="productCount" required>
+            </div>
+            <div class="form-group">
+                <label for="productPrice">Đơn giá:</label>
+                <input type="number" class="form-control" id="productPrice" name="productPrice" required>
+            </div>
+            <div class="form-group">
+                <label for="productImages">Hình ảnh (tối đa 2 ảnh):</label>
+                <input type="file" class="form-control-file" id="productImages" name="productImages" multiple required>
+                
+            </div>
+            <div class="form-group">
+                <label for="productDescription">Mô tả:</label>
+                <input type="text" class="form-control" id="productDescription" name="productDescription">
+            </div>
+            <button type="submit" class="btn btn-primary">Thêm</button>
+        </form>
+    </div>
+ 
+
+</body>
+
+</html>
